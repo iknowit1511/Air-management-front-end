@@ -1,3 +1,5 @@
+Hiện tại chỉ tất cả đều đã test - folder admin chỉ mới test tới adminPage nhưng vẫn k hoàn toàn.
+
 cơ bản về cái này chúng ta có thể làm là:
 Cần tải nodejs npm trên web: https://nodejs.org/en/download
 và tải tailwindcss bằng lệnh: npm install -D tailwindcss postcss autoprefixer
