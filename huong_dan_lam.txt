@@ -1,0 +1,6 @@
+cơ bản về cái này chúng ta có thể làm là:
+Bước 1: vô service/apiService => tạo các api cần thiết
+Bước 2: vào components => tạo các page .jsx cần thiết
+Bước 3: Chạy BE java lên
+Bước 4: Vào App.jsx thêm route, nhớ import route mới 
+Bước 5: nhập npm run dev, ctrl + click localhost là chạy 
