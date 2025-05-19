@@ -12,8 +12,8 @@ const ProfilePage = () => {
     try {
       setIsLoading(true);
       const response = await ApiService.getUserProfile();
-      const userPlusBookings = await ApiService.getUserBookings(response.user.id);
-      setUser(userPlusBookings.user);
+      const userPlusBookings = await ApiService.getUserBookings(response.usersDTO.userId);
+      setUser(userPlusBookings.usersDTO);
       setError(null);
     } catch (error) {
       setError(error.response?.data?.message || 'Failed to fetch user profile');
@@ -56,7 +56,7 @@ const ProfilePage = () => {
 
             {user && (
               <div className="profile-header flex justify-between items-center mb-8">
-                <h2 className="text-3xl font-bold text-gray-900">Welcome, {user.name}</h2>
+                <h2 className="text-3xl font-bold text-gray-900">Welcome, {user.username}</h2>
                 <div className="profile-actions flex space-x-4">
                   <button
                     className="edit-profile-button px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"

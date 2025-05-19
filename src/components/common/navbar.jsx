@@ -6,6 +6,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const isAuthenticated = ApiService.isAuthenticated();
   const isAdmin = ApiService.isAdmin();
+  const isUser = ApiService.isUser();
   const [username, setUsername] = useState('');
 
   const handleLogout = () => {
@@ -36,7 +37,7 @@ const Navbar = () => {
               Tour
             </NavLink>
           </li>
-          {isAuthenticated && (
+          {isUser && (
             <li>
               <NavLink to="/profile" activeclassname="active" className="text-white font-medium px-4 py-2 rounded-md transition duration-300 hover:bg-blue-400">
                 Profile

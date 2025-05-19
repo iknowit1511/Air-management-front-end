@@ -14,8 +14,9 @@ const AdminPage = () => {
     try {
       setIsLoading(true);
       const response = await ApiService.getAllUsers();
-      setUsers(response.data?.users || response.users || []);
-      setError(null);
+      const allUsers = response.data?.users || response.userDTO || [];
+      setUsers(allUsers);
+      setError(allUsers.length > 0 ? null : 'No users found');
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to fetch users');
     } finally {

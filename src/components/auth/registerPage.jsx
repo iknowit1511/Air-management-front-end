@@ -1,44 +1,56 @@
 import React, { useState } from 'react';
-import apiService from '../../service/apiService'; 
-import { useNavigate } from 'react-router-dom'; 
+import ApiService from '../../service/apiService'; // Sử dụng tên import thống nhất
+import { useNavigate } from 'react-router-dom';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     username: '',
     email: '',
     password: '',
     confirmPassword: '',
   });
+
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    setFormData({ ...formData, [name]: value });
   };
 
   const validateForm = () => {
     const { username, email, password, confirmPassword } = formData;
+
+    // Kiểm tra các trường bắt buộc
     if (!username.trim() || !email.trim() || !password.trim() || !confirmPassword.trim()) {
       setErrorMessage('All fields are required.');
+      setSuccessMessage('');
       return false;
     }
+
+    // Kiểm tra định dạng email
     if (!/\S+@\S+\.\S+/.test(email)) {
       setErrorMessage('Please enter a valid email address.');
+      setSuccessMessage('');
       return false;
     }
+
+    // Kiểm tra độ dài mật khẩu
     if (password.length < 6) {
       setErrorMessage('Password must be at least 6 characters long.');
+      setSuccessMessage('');
       return false;
     }
+
+    // Kiểm tra mật khẩu khớp
     if (password !== confirmPassword) {
       setErrorMessage('Passwords do not match.');
+      setSuccessMessage('');
       return false;
     }
+
     setErrorMessage('');
     return true;
   };
@@ -51,33 +63,50 @@ const RegisterPage = () => {
     }
 
     try {
-      const response = await apiService.registerUser(formData);
-      if (response && (response.statusCode === 200 || response.statusCode === 201 || response.message)) {
-        setSuccessMessage(response.message || 'Registration successful! Redirecting...');
+      // Chỉ gửi các trường cần thiết cho API (loại bỏ confirmPassword)
+      const { confirmPassword, ...dataToSend } = formData;
+      const response = await ApiService.registerUser(dataToSend);
+      console.log('API Response:', response); // Để debug
+
+      // Kiểm tra phản hồi API
+      const success = response?.status === 200 || response?.status === 201 || response?.data?.statusCode === 200 || response?.data?.statusCode === 201;
+      if (success) {
+        setSuccessMessage(response?.data?.message || response?.message || 'Registration successful! Redirecting...');
         setErrorMessage('');
-        setFormData({ username: '', email: '', password: '', confirmPassword: '' });
+        setFormData({
+          username: '',
+          email: '',
+          password: '',
+          confirmPassword: '',
+        });
         setTimeout(() => {
+          setSuccessMessage('');
           navigate('/login');
         }, 2000);
       } else {
-        setErrorMessage(response.message || 'Registration failed. Please try again.');
+        setErrorMessage(response?.data?.message || response?.message || 'Registration failed. Please try again.');
         setSuccessMessage('');
+        setTimeout(() => setErrorMessage(''), 5000);
       }
     } catch (error) {
+      console.error('API Error:', error.response || error);
       setErrorMessage(error.response?.data?.message || error.message || 'An unexpected error occurred. Please try again.');
       setSuccessMessage('');
+      setTimeout(() => setErrorMessage(''), 5000);
     }
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-teal-400 to-blue-500">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h2 className="text-2xl font-bold text-gray-800 text-center mb-6">Register</h2>
+        <h2 className="text-2xl font-bold text-gray-800 text-center mb-6">Sign Up</h2>
         {errorMessage && <p className="text-red-500 text-sm text-center mb-4">{errorMessage}</p>}
         {successMessage && <p className="text-green-500 text-sm text-center mb-4">{successMessage}</p>}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="username" className="block text-sm font-medium text-gray-700">Username</label>
+            <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+              Username
+            </label>
             <input
               id="username"
               type="text"
@@ -89,7 +118,9 @@ const RegisterPage = () => {
             />
           </div>
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              Email
+            </label>
             <input
               id="email"
               type="email"
@@ -101,7 +132,9 @@ const RegisterPage = () => {
             />
           </div>
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              Password
+            </label>
             <input
               id="password"
               type="password"
@@ -113,7 +146,9 @@ const RegisterPage = () => {
             />
           </div>
           <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">Confirm Password</label>
+            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+              Confirm Password
+            </label>
             <input
               id="confirmPassword"
               type="password"

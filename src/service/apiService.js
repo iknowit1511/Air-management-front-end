@@ -39,7 +39,7 @@ export default class ApiService {
         const response = await axios.get(`${this.BASE_URL}/users/me`, {
             headers: this.getHeader(),
         });
-        return response.data; // Assuming the API response contains a `username` field
+        return response.data;
     }
 
     static async getUserBookings(userId) {
@@ -51,6 +51,12 @@ export default class ApiService {
 
     static async deleteUser(userId) {
         const response = await axios.delete(`${this.BASE_URL}/users/delete/${userId}`, {
+            headers: this.getHeader(),
+        });
+        return response.data;
+    }
+    static async updateUserProfile(userId, user) {
+        const response = await axios.put(`${this.BASE_URL}/users/update/${userId}`, user, {
             headers: this.getHeader(),
         });
         return response.data;
