@@ -1,15 +1,11 @@
 import React from 'react';
 
 const Pagination = ({ itemsPerPage, totalItems, currentPage, paginate }) => {
-  const pageNumbers = [];
-
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-  for (let i = 1; i <= totalPages; i++) {
-    pageNumbers.push(i);
-  }
+  if (totalPages <= 1) return null; // Không hiển thị nếu chỉ có 1 trang hoặc không có trang
 
-  if (totalPages === 1) return null; // Nếu chỉ 1 trang thì không hiện pagination
+  const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   return (
     <nav className="flex justify-center mt-6">

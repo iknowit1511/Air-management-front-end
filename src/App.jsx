@@ -7,6 +7,8 @@ import ProfilePage from './components/profile/profilePage';
 import EditProfile from './components/profile/editProfilePage';
 import SearchFlight from './components/booking/searchflight';
 import AdminPage from './components/admin/adminPage';
+import ManageUser from './components/admin/manageUser';
+import ManageFlight from './components/admin/manageFlight';
 import './index.css';
 
 function App() {
@@ -22,7 +24,12 @@ function App() {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/edit-profile" element={<EditProfile />} />
           <Route path="/search-flights" element={<SearchFlight />} />
+
+
+
           <Route path="/admin" element={<AdminPage />} />
+          <Route path="/admin/users" element={<ManageUser />} />
+          <Route path="/admin/flights" element={<ManageFlight />} />
         </Routes>
       </div>
     </div>
